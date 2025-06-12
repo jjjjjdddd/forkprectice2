@@ -1,0 +1,59 @@
+{% extends 'menu/base.html' %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<div class="mb-4">
+    <a href="{% url 'menu_create' %}" class="btn btn-primary">새 메뉴 등록</a>
+</div>
+{% endif %}
+
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="row">
+    {% for menu in menus %}
+    <div class="col-md-4 mb-4">
+        <div class="card menu-card">
+            {% if menu.image %}
+            <img src="{{ menu.image.url }}" class="card-img-top" alt="{{ menu.name }}">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ menu.name }}</h5>
+                <p class="card-text">{{ menu.description }}</p>
+                <p class="card-text"><strong>가격:</strong> {{ menu.price }}원</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="badge bg-{% if menu.remaining_servings > 0 %}success{% else %}danger{% endif %} remaining-badge">
+                        남은 수량: {{ menu.remaining_servings }}/{{ menu.total_servings }}
+                    </span>
+                    {% if user.is_authenticated %}
+                    <div class="btn-group">
+                        {% if menu.remaining_servings > 0 %}
+                        <form method="post" action="{% url 'purchase_menu' menu.pk %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-success">구매</button>
+                        </form>
+                        {% endif %}
+                        <a href="{% url 'menu_update' menu.pk %}" class="btn btn-sm btn-outline-primary">수정</a>
+                        <a href="{% url 'menu_delete' menu.pk %}" class="btn btn-sm btn-outline-danger">삭제</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info">
+            등록된 메뉴가 없습니다.
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %} 

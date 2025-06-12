@@ -1,0 +1,32 @@
+{% extends 'menu/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>{% if form.instance.pk %}메뉴 수정{% else %}새 메뉴 등록{% endif %}</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="{{ form.name.id_for_label }}" class="form-label">메뉴 이름</label>
+            {{ form.name }}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.description.id_for_label }}" class="form-label">메뉴 설명</label>
+            {{ form.description }}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.price.id_for_label }}" class="form-label">가격</label>
+            {{ form.price }}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.total_servings.id_for_label }}" class="form-label">총 준비 수량</label>
+            {{ form.total_servings }}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.image.id_for_label }}" class="form-label">메뉴 이미지</label>
+            {{ form.image }}
+        </div>
+        <button type="submit" class="btn btn-primary">저장</button>
+        <a href="{% url 'menu_list' %}" class="btn btn-secondary">취소</a>
+    </form>
+</div>
+{% endblock %} 
