@@ -12,10 +12,13 @@ import sys
 
 from django.core.wsgi import get_wsgi_application
 
-path = '/home/yourusername/cafeteria_project'
+path = '/home/dbin0112/cafeteria_project'
 if path not in sys.path:
     sys.path.append(path)
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'cafeteria_project.settings')
 
 application = get_wsgi_application()
+
+
+#from app import app as application  # Flask일 경우
